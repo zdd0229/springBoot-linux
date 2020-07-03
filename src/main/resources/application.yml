@@ -23,6 +23,10 @@ spring:
         max-wait: 300ms
         max-idle: 8
         min-idle: 4
+  mvc:
+    throw-exception-if-no-handler-found: true
+  resources:
+      add-mappings: false
 
 
 mybatis:
@@ -35,3 +39,4 @@ logging:
     com:
       z:
         dao : debug
+  path: D:\kms\springBoot-linux\logs

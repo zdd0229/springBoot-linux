@@ -1,10 +1,13 @@
 package com.z.util;
 
+import javax.servlet.http.HttpServletRequest;
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Enumeration;
 import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -339,5 +342,41 @@ public class StringUtils {
         boolean isInt = Pattern.compile("^-?[1-9]\\d*$").matcher(str).find();
         boolean isDouble = Pattern.compile("^-?([1-9]\\d*\\.\\d*|0\\.\\d*[1-9]\\d*|0?\\.0+|0)$").matcher(str).find();
         return isInt || isDouble;
+    }
+
+    /**
+     * 根据从request中获取body的参数值
+     *
+     * @param br bufferreader
+     * @return 字符串
+     */
+    public static String getBodyString(BufferedReader br) {
+        String inputLine;
+        String str = "";
+        try {
+            while ((inputLine = br.readLine()) != null) {
+                str += inputLine;
+            }
+            br.close();
+        } catch (IOException e) {
+            System.out.println("IOException: " + e);
+        }
+        return str;
+    }
+
+    /**
+     * 取得header的所有属性
+     *
+     * @param headers 请求的headers
+     * @param request request
+     * @return 把header拼成字符串
+     */
+    public static String getHeaderValue(Enumeration<String> headers, HttpServletRequest request) {
+        String str = "";
+        while (headers.hasMoreElements()) {
+            String header = headers.nextElement();
+            str += header + "=" + request.getHeader(header) + "&";
+        }
+        return str;
     }
 }
