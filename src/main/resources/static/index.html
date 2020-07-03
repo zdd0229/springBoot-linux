@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>首页</title>
+</head>
+<body>
+    我是首页hello
+    <span id="data"></span>
+
+    <div id="datatable">
+
+    </div>
+
+</body>
+<!--<script src="/js/Tools.js"></script>-->
+<!--<script src="/js/Table.js"></script>-->
+<script src="/js/jquery-3.5.1.min.js"></script>
+<script>
+
+    (function sayHello(args){
+        console.log(args)
+    })("hello")
+
+    $.ajax({
+        url: "http://localhost:31001/student/getall.ajax/1/2",
+        type: "POST",
+        dataType: "json",
+        async:false,
+        success: function(data) {
+            console.log(data)
+        }
+    });
+
+    // ajax({
+    //     type:"GET",
+    //     url:"http://localhost:31001/student/getall.ajax/1/2",
+    //     async:true,
+    //     success:function (data) {
+    //         $("data").innerText=data
+    //     }
+    // })
+
+    // 使用方法 table("args") 和 new table("args")
+    // table({
+    //     id:"datatable",
+    //     columeAlias: ["姓名","年龄","出生年月","性别","地址"],
+    //     colume:["name","age","birthday","sex","address"],
+    //     lineNo:true,
+    //     dataUrl:"http://localhost:31001/student/getall.ajax/1/2",
+    //     open:function () {
+    //         console.log("start")
+    //     },
+    //     close:function () {
+    //         console.log("end")
+    //     }
+    // });
+</script>
+</html>
