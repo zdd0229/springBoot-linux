@@ -1,8 +1,9 @@
 package com.z.bean;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class BasePO {
+public class BasePO implements Serializable {
     private String mUser;
     private Date mDate;
     private String cUser;
