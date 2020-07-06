@@ -1,4 +1,4 @@
-package com.z.jsonres;
+package com.z.bean.jsonres;
 
 public class GlobalReturnCode {
     /**

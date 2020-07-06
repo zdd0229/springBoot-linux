@@ -1,4 +1,4 @@
-package com.z.jsonres;
+package com.z.bean.jsonres;
 
 import java.util.HashMap;
 import java.util.Map;

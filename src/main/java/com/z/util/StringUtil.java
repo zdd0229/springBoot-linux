@@ -1,6 +1,7 @@
 package com.z.util;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -21,7 +22,7 @@ import java.util.regex.Pattern;
  * @Email: wuyu89630@163.com
  * 
  */
-public class StringUtils {
+public class StringUtil {
 
     /**
      * 检查IP串是否合法
@@ -378,5 +379,20 @@ public class StringUtils {
             str += header + "=" + request.getHeader(header) + "&";
         }
         return str;
+    }
+
+    /**
+     * 在controller或action里面打印字符串，返回给前台
+     *
+     * @param response response
+     * @param res      字符串
+     */
+    public static void out(HttpServletResponse response,String res){
+        try {
+            response.setContentType("text/html; charset=UTF-8");
+            response.getWriter().println(res);
+        }catch (IOException e){
+            e.printStackTrace();
+        }
     }
 }

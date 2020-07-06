@@ -1,14 +1,18 @@
-package com.z.advice;
+package com.z.config.advice;
 
-import com.z.jsonres.GlobalReturnCode;
-import com.z.jsonres.JsonResult;
-import com.z.util.StringUtils;
+import com.z.bean.jsonres.GlobalReturnCode;
+import com.z.bean.jsonres.JsonResult;
+import com.z.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,16 +27,39 @@ public class ApiControllerAdvice {
 
     @ExceptionHandler(Exception.class)
     @ResponseBody
-    public JsonResult defaultErrorHandler(Exception e,HttpServletRequest request, HttpServletResponse response){
-        logger.error("系统异常",e);
-        logException(request);
-        if(e instanceof NoHandlerFoundException){
+    public JsonResult defaultErrorHandler(Exception e, HttpServletRequest request, HttpServletResponse response) {
+        logger.error("系统异常", e);
+        this.logException(request);
+        if (e instanceof NoHandlerFoundException) {
             response.setStatus(HttpStatus.NOT_FOUND.value());
             return new JsonResult(false, GlobalReturnCode.SYSTEM_PATH_NOEXIST);
-        }else {
+        } else {
             response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
             return new JsonResult(false, GlobalReturnCode.SYSTEM_ERROR);
         }
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    @Order(0)
+    public JsonResult argumentNotValid(HttpServletRequest request, MethodArgumentNotValidException e) {
+
+        logger.info("请求参数不正确", e);
+        this.logException(request);
+
+        String validation_message;
+        BindingResult bindingResult = e.getBindingResult();
+
+        if (bindingResult != null && bindingResult.getFieldError() != null) {
+            validation_message = bindingResult.getFieldError().getDefaultMessage();
+        } else {
+            validation_message = e.getMessage();
+        }
+
+        logger.info("参数错误信息：" + validation_message);
+
+        return new JsonResult(false,GlobalReturnCode.PARAM_ERROR,validation_message);
     }
 
     /**
@@ -58,10 +85,10 @@ public class ApiControllerAdvice {
      */
     private void logException(HttpServletRequest request) {
         try {
-            logger.error("请求路径："+request.getServletPath());
+            logger.error("请求路径：" + request.getServletPath());
             logger.error("请求参数：" + request.getParameterMap().toString());
             logger.error("请求header:" + getHeaderValue(request.getHeaderNames(), request));
-            logger.error("请求body:" + StringUtils.getBodyString(request.getReader()));
+            logger.error("请求body:" + StringUtil.getBodyString(request.getReader()));
         } catch (Exception e) {
             e.printStackTrace();
         }

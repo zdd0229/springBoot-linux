@@ -3,8 +3,8 @@ package com.z.controller;
 import com.z.bean.PO.UserPo;
 import com.z.bean.VO.UserVo;
 import com.z.constant.RedisKey;
-import com.z.jsonres.GlobalReturnCode;
-import com.z.jsonres.JsonResult;
+import com.z.bean.jsonres.GlobalReturnCode;
+import com.z.bean.jsonres.JsonResult;
 import com.z.service.UserService;
 import com.z.util.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -29,14 +30,14 @@ public class UserController {
     private RedisUtil redisUtil;
 
     @PostMapping("/checkLogin")
-    public JsonResult login(HttpServletRequest request,@RequestBody UserVo userVo){
+    public JsonResult login(HttpServletRequest request,@Valid @RequestBody UserVo userVo){
 
         UserPo user= userService.getUserByName(userVo.getUsername());
         if(user!=null && user.getPassword().equals(userVo.getPassword())){
             //登陆成功
             String accessToken= UUID.randomUUID().toString();
             //放入redis
-            redisUtil.set(RedisKey.ACCESS_TOKEC+accessToken,user,30*60);
+            redisUtil.set(RedisKey.ACCESS_TOKEN+accessToken,user,30*60);
 
             //UserPo userPo = redisUtil.get(RedisKey.ACCESS_TOKEC+accessToken,UserPo.class);
 

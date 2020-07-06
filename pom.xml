@@ -67,6 +67,14 @@
             <scope>test</scope>
         </dependency>
 
+        <!--Jodd是一个Java工具包和微型框架，Jodd 工具包含一些实用的工具类和小型框架，
+        增强了 JDK 提供很多强大的功能，可以帮助实现日常的开发任务，让代码更可靠;
+        而Jodd 框架是一个轻量级的应用框架，设计遵循CoC、DRY和SCS原则，让开发更加简单。 -->
+        <dependency>
+            <groupId>org.jodd</groupId>
+            <artifactId>jodd-core</artifactId>
+            <version>3.9</version>
+        </dependency>
 
     </dependencies>
     <!-- jar -->

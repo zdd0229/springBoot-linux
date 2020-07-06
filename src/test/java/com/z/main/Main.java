@@ -1,7 +1,5 @@
 package com.z.main;
 
-import com.z.util.StringUtils;
-
 import java.util.Scanner;
 
 public class Main {

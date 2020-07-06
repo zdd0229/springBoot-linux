@@ -1,8 +1,8 @@
 package com.z.controller;
 
 import com.z.bean.PO.NewsPo;
-import com.z.jsonres.GlobalReturnCode;
-import com.z.jsonres.JsonResult;
+import com.z.bean.jsonres.GlobalReturnCode;
+import com.z.bean.jsonres.JsonResult;
 import com.z.service.NewsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
