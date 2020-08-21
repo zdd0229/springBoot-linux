@@ -1,4 +1,4 @@
-package com.z.thread.tutorials;
+package com.z.thread.tutorials.create;
 
 public class ThreadExample {
 

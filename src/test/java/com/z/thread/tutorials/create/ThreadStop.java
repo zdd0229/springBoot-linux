@@ -1,4 +1,4 @@
-package com.z.thread.tutorials;
+package com.z.thread.tutorials.create;
 
 public class ThreadStop implements Runnable {
 
@@ -12,11 +12,15 @@ public class ThreadStop implements Runnable {
         this.run=true;
     }
 
+    private long num=0;
+
     @Override
     public void run() {
         while (run){
+            num++;
             System.out.println("running...");
         }
+        System.out.println(num);
     }
 
     public static void main(String[] args) {
