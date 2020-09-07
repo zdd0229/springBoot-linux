@@ -40,3 +40,10 @@ logging:
       z:
         dao : debug
   path: D:\kms\springBoot-linux\logs
+
+alibaba:
+  cloud:
+    access-key: LTAI4GC3EEse7fSLXxG8Zj1M
+    secret-key: Faq9N12KAmpRLzCux2533FqKn2mZdg
+    oss:
+      endpoint: oss-cn-shanghai.aliyuncs.com

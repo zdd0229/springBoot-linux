@@ -1,7 +1,4 @@
 package com.z.controller;
-import java.util.Date;
-import com.z.bean.enumm.Gender;
-
 import com.z.bean.VO.StudentVO;
 import com.z.exception.BusinessException;
 import com.z.service.StudentService;
@@ -27,10 +24,6 @@ public class StudentController {
         List<StudentVO> students= studentService.getAll(page,size);
         model.addAttribute("students",students);
 
-        if(students.size()<10){
-            throw new BusinessException("10","数量太少");
-        }
-
         return "student/list";
     }
 
@@ -39,10 +32,6 @@ public class StudentController {
     public List<StudentVO> getAllAjax(@PathVariable("page") int page, @PathVariable("size") int size , Model model) throws BusinessException {
 
         List<StudentVO> students= studentService.getAll(page,size);
-
-        if(students.size()<10){
-            throw new BusinessException("10","数量太少了");
-        }
 
         return students;
     }
