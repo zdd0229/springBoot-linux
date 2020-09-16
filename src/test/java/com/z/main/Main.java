@@ -1,37 +1,31 @@
 package com.z.main;
 
-import java.util.Scanner;
+import java.util.*;
 
 public class Main {
     public static void main(String[] args) throws InterruptedException {
 
-//        String note="";
-//
-//        System.out.println(note.length());
-//        if (StringUtils.isNotEmpty(note)&&note.length()>10){
-//            note=note.substring(0,10);
-//        }
-//        System.out.println(note);
-//        System.out.println(note.length());
+        List<Integer> list = new ArrayList<>(32);
+        List<Integer> link = new LinkedList<>();
 
-        Scanner in = new Scanner(System.in);
-        int x = 0;//记录正数的个数
-        int y = 0;//记录负数的个数
+        Map<String,String> hashMap= new HashMap<>();
 
-        while(true){
-            System.out.println("请输入一个数：");
-            int num = in.nextInt();
-            if(num > 0){
-                x++;
-            }else if(num < 0){
-                y++;
-            }else{
-                break;
-            }
-        }
-        System.out.println("正数的个数为：" + x + "个");
-        System.out.println("负数的个数为：" + y + "个");
+        hashMap.put("name","zdd");
+
+
+        System.out.println(tableSizeFor(65));
 
     }
+    static final int MAXIMUM_CAPACITY = 1 << 30;
 
+
+    static final int tableSizeFor(int cap) {
+        int n = cap - 1;
+        n |= n >>> 1;
+        n |= n >>> 2;
+        n |= n >>> 4;
+        n |= n >>> 8;
+        n |= n >>> 16;
+        return (n < 0) ? 1 : (n >= MAXIMUM_CAPACITY) ? MAXIMUM_CAPACITY : n + 1;
+    }
 }

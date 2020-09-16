@@ -36,4 +36,11 @@ public class StudentController {
         return students;
     }
 
+    @RequestMapping("/test")
+    @ResponseBody
+    public void get() throws InterruptedException {
+        Thread.sleep(100L);
+        return;
+    }
+
 }
