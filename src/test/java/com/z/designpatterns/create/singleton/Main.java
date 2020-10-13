@@ -1,4 +1,4 @@
-package com.z.designpatterns.create._5;
+package com.z.designpatterns.create.singleton;
 
 public class Main {
     public static void main(String[] args) {

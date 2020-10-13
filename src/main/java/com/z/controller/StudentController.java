@@ -19,11 +19,13 @@ public class StudentController {
     private StudentService studentService;
 
     @RequestMapping("/getall/{page}/{size}")
-    public String getAll(@PathVariable("page") int page, @PathVariable("size") int size , Model model) throws BusinessException {
+    public String getAll(@PathVariable("page") int page, @PathVariable("size") int size , Model model) throws Exception {
 
         List<StudentVO> students= studentService.getAll(page,size);
         model.addAttribute("students",students);
-
+        if(true){
+            throw new Exception("");
+        }
         return "student/list";
     }
 

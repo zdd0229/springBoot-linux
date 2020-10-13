@@ -2,6 +2,11 @@ package com.z.main;
 
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Hello");
+
+        String a = "Hello";
+        String b = new String("JVM");
+
+        System.out.println(a + b);
+
     }
 }
