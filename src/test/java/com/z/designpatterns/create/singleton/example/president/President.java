@@ -2,26 +2,34 @@ package com.z.designpatterns.create.singleton.example.president;
 
 public class President {
 
-    private static final President PRESIDENT = new President();
+    private static volatile President PRESIDENT = null;
 
     private President(){
+        System.out.println("产生一个新总统");
     }
 
-    private String name = "特朗普";
-
-    public String getName(){
-        return this.name;
+    public void getName(){
+        System.out.println("我是特朗普");
     }
 
-    public static President getInstance(){
+    public static synchronized President getInstance(){
+
+        if (PRESIDENT == null){
+            PRESIDENT = new President();
+        }else {
+            System.out.println("已经有一个总统了，不能产生新的总统");
+        }
+
         return PRESIDENT;
     }
 
     public static void main(String[] args) {
 
-        President president = President.getInstance();
+        President president1 = President.getInstance();
+        president1.getName();
 
-        System.out.println(president.getName());
+        President president2 = President.getInstance();
+        president2.getName();
 
     }
 }
