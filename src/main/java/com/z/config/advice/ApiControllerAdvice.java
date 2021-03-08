@@ -88,7 +88,7 @@ public class ApiControllerAdvice {
             logger.error("请求路径：" + request.getServletPath());
             logger.error("请求参数：" + request.getParameterMap().toString());
             logger.error("请求header:" + getHeaderValue(request.getHeaderNames(), request));
-            logger.error("请求body:" + StringUtil.getBodyString(request.getReader()));
+//            logger.error("请求body:" + StringUtil.getBodyString(request.getReader()));
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -1,13 +1,12 @@
 package com.z.controller;
 import com.z.bean.VO.StudentVO;
+import com.z.bean.VO.UserArrayVo;
 import com.z.exception.BusinessException;
 import com.z.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -42,6 +41,14 @@ public class StudentController {
     @ResponseBody
     public void get() throws InterruptedException {
         Thread.sleep(100L);
+        return;
+    }
+
+    @PostMapping("/arraydate")
+    @ResponseBody
+    public void test(UserArrayVo arrayVo){
+
+        System.out.println(arrayVo);
         return;
     }
 
