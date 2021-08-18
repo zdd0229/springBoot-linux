@@ -2,7 +2,7 @@ package com.z.config.advice;
 
 import com.z.bean.jsonres.GlobalReturnCode;
 import com.z.bean.jsonres.JsonResult;
-import com.z.util.StringUtil;
+import com.z.exception.BusinessException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.annotation.Order;
@@ -24,6 +24,14 @@ import java.util.Enumeration;
 public class ApiControllerAdvice {
 
     private static Logger logger = LoggerFactory.getLogger("controllerLog");
+
+
+    @ExceptionHandler(BusinessException.class)
+    @ResponseBody
+    public JsonResult customErrorHandler(BusinessException e, HttpServletRequest request, HttpServletResponse response) {
+        logger.error("自定义异常", e);
+        return new JsonResult(false, "-1", e.getMsg());
+    }
 
     @ExceptionHandler(Exception.class)
     @ResponseBody
@@ -59,7 +67,7 @@ public class ApiControllerAdvice {
 
         logger.info("参数错误信息：" + validation_message);
 
-        return new JsonResult(false,GlobalReturnCode.PARAM_ERROR,validation_message);
+        return new JsonResult(false, GlobalReturnCode.PARAM_ERROR, validation_message);
     }
 
     /**

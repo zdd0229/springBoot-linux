@@ -1,6 +1,6 @@
 package com.z.exception;
 
-public class BusinessException extends Exception {
+public class BusinessException extends RuntimeException {
 
     private String id;
     private String msg;

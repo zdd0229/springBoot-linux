@@ -17,14 +17,14 @@ public class CheckLoginInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
-        if(StringUtil.isEmpty(request.getHeader("Authorization"))|| TokenUtil.getToken(request)==null){
-            //设置为未授权
-            response.setStatus(HttpStatus.UNAUTHORIZED.value());
-            StringUtil.out(response, JsonUtil.toStr(new JsonResult(false, GlobalReturnCode.NO_AUTH)));
-            return false;
-        }else {
+//        if(StringUtil.isEmpty(request.getHeader("Authorization"))|| TokenUtil.getToken(request)==null){
+//            //设置为未授权
+//            response.setStatus(HttpStatus.UNAUTHORIZED.value());
+//            StringUtil.out(response, JsonUtil.toStr(new JsonResult(false, GlobalReturnCode.NO_AUTH)));
+//            return false;
+//        }else {
             return true;
-        }
+//        }
 
     }
 
