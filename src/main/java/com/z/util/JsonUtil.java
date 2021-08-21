@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.z.bean.jsonres.ReturnCodeUtil;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class JsonUtil {
@@ -48,6 +49,19 @@ public class JsonUtil {
         return null;
     }
 
+    /**
+     * 将json数据转换成pojo对象lis
+     */
+    public static <T> List<T> jsonToList(String jsonData, Class<T> beanType) {
+        JavaType javaType = objectMapper.getTypeFactory().constructParametricType(List.class, beanType);
+        try {
+            List<T> list = objectMapper.readValue(jsonData, javaType);
+            return list;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     /**
      * 把json转成map
@@ -71,7 +85,7 @@ public class JsonUtil {
      * 反序列化生成对象
      *
      * @param collectionClass collectionClass
-     * @param elementClasses elementClasses
+     * @param elementClasses  elementClasses
      * @return 集合类
      */
     public static JavaType getCollectionType(Class<?> collectionClass, Class<?>... elementClasses) {
@@ -94,7 +108,7 @@ public class JsonUtil {
     /**
      * 直接读取json串里面某个节点的值
      *
-     * @param json json字符串
+     * @param json    json字符串
      * @param nodeStr 节点名
      * @return json的节点
      */

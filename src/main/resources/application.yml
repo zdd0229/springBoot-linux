@@ -9,14 +9,14 @@ spring:
       template_update_delay: 0 #检查模板更新延迟时间，设置为0表示立即检查，如果时间大于0会有缓存不方便进行模板测试
   datasource:
     username: root
-    password: root
-    url: jdbc:mysql://101.132.128.127:3307/test?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=UTC
+    password: rootzdd0229
+    url: jdbc:mysql://101.132.128.127:3307/gulimall_pms?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=UTC
 #    url: jdbc:mysql://localhost:3306/test?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=UTC
     driver-class-name: com.mysql.jdbc.Driver
   redis:
     host: 101.132.128.127
     port: 6379
-    password:
+    password: rediszdd0229
     database: 0
     lettuce:
       pool:

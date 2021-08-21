@@ -89,4 +89,8 @@ public class JsonResult {
         this.message = message;
     }
 
+    public static JsonResult success(Object o){
+        return new JsonResult(true,"200",o);
+    }
+
 }
