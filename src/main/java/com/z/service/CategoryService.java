@@ -4,18 +4,22 @@ import com.z.bean.entity.Category;
 import com.z.controller.CategoryNodeDto;
 import com.z.dao.CategoryMapper;
 import com.z.util.JsonUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class CategoryService {
 
     @Autowired
@@ -26,8 +30,42 @@ public class CategoryService {
 
     private static final String CATEGORY = "three-level-category";
 
+    private AtomicInteger dbThread = new AtomicInteger();
+    private AtomicInteger cacheThread = new AtomicInteger();
+
     /**
      * 查询三级分类
+     *
+     * @return
+     */
+    public List<CategoryNodeDto> getThreeLevelCategory1() {
+
+        Object o = redisTemplate.opsForValue().get(CATEGORY);
+        if (!Objects.isNull(o)) {
+            return JsonUtil.jsonToList((String) o, CategoryNodeDto.class);
+        }
+        //缓存击穿问题(加锁，拿到锁后，先查询缓存(防止等待锁的请求，再次请求数据库)，才可以查询数据库)
+        synchronized (this) {
+            Object o1 = redisTemplate.opsForValue().get(CATEGORY);
+            if (!Objects.isNull(o1)) {
+                return JsonUtil.jsonToList((String) o1, CategoryNodeDto.class);
+            }
+
+            List<Category> all = categoryMapper.getCategory(null, null, null);
+            Map<Long, List<Category>> allByParentId = all.stream().collect(Collectors.groupingBy(Category::getParentCid));
+
+            List<CategoryNodeDto> category = getCategory(0L, allByParentId);
+            //写入缓存
+            //解决缓存穿透问题，为空值设置较短的过期时间
+            redisTemplate.opsForValue().set(CATEGORY, JsonUtil.toStr(category), 1, CollectionUtils.isEmpty(category) ? TimeUnit.MINUTES : TimeUnit.DAYS);
+
+            return category;
+        }
+
+    }
+
+    /**
+     * 查询三级分类（分布式锁实现）
      *
      * @return
      */
@@ -37,16 +75,31 @@ public class CategoryService {
         if (!Objects.isNull(o)) {
             return JsonUtil.jsonToList((String) o, CategoryNodeDto.class);
         }
+        //缓存击穿问题(加锁，拿到锁后，先查询缓存(防止等待锁的请求，再次请求数据库)，才可以查询数据库)
+        //redis锁
+        while (!redisTemplate.opsForValue().setIfAbsent("three-level-category-get-lock", 1)) {
+            continue;
+        }
+        log.info("共有{}个线程想去查询数据库", dbThread.incrementAndGet());
+        Object o1 = redisTemplate.opsForValue().get(CATEGORY);
+        if (!Objects.isNull(o1)) {
+            log.info("共有{}个线程走了缓存", cacheThread.incrementAndGet());
+            redisTemplate.delete("three-level-category-get-lock");
+            return JsonUtil.jsonToList((String) o1, CategoryNodeDto.class);
+        }
 
         List<Category> all = categoryMapper.getCategory(null, null, null);
         Map<Long, List<Category>> allByParentId = all.stream().collect(Collectors.groupingBy(Category::getParentCid));
 
         List<CategoryNodeDto> category = getCategory(0L, allByParentId);
         //写入缓存
-        redisTemplate.opsForValue().set(CATEGORY, JsonUtil.toStr(category),1, TimeUnit.DAYS);
+        //解决缓存穿透问题，为空值设置较短的过期时间
+        redisTemplate.opsForValue().set(CATEGORY, JsonUtil.toStr(category), 1, CollectionUtils.isEmpty(category) ? TimeUnit.MINUTES : TimeUnit.DAYS);
 
+        redisTemplate.delete("three-level-category-get-lock");
+
+        //测试环境初始化
         return category;
-
     }
 
     /**
@@ -73,10 +126,10 @@ public class CategoryService {
     private CategoryNodeDto copyCategory(Category category) {
         CategoryNodeDto res = new CategoryNodeDto();
         res.setName(category.getName());
-        res.setParentCid(category.getParentCid());
-        res.setCatLevel(category.getCatLevel());
+//        res.setParentCid(category.getParentCid());
+//        res.setCatLevel(category.getCatLevel());
         res.setSort(category.getSort());
-        res.setIcon(category.getIcon());
+//        res.setIcon(category.getIcon());
         return res;
     }
 
