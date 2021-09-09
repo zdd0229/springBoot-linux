@@ -5,6 +5,8 @@ import com.z.controller.CategoryNodeDto;
 import com.z.dao.CategoryMapper;
 import com.z.util.JsonUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.redisson.api.RLock;
+import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -27,6 +29,9 @@ public class CategoryService {
 
     @Autowired
     private RedisTemplate redisTemplate;
+
+    @Autowired
+    private RedissonClient redissonClient;
 
     private static final String CATEGORY = "three-level-category";
 
@@ -69,7 +74,7 @@ public class CategoryService {
      *
      * @return
      */
-    public List<CategoryNodeDto> getThreeLevelCategory() {
+    public List<CategoryNodeDto> getThreeLevelCategory2() {
 
         Object o = redisTemplate.opsForValue().get(CATEGORY);
         if (!Objects.isNull(o)) {
@@ -100,6 +105,48 @@ public class CategoryService {
 
         //测试环境初始化
         return category;
+    }
+
+    /**
+     * 查询三级分类（redission实现）
+     *
+     * @return
+     */
+    public List<CategoryNodeDto> getThreeLevelCategory() {
+
+        Object o = redisTemplate.opsForValue().get(CATEGORY);
+        if (!Objects.isNull(o)) {
+            return JsonUtil.jsonToList((String) o, CategoryNodeDto.class);
+        }
+        //缓存击穿问题(加锁，拿到锁后，先查询缓存(防止等待锁的请求，再次请求数据库)，才可以查询数据库)
+        //redission
+        RLock lock = redissonClient.getLock("three-level-category-redisson-lock");
+        lock.lock();
+
+        List<CategoryNodeDto> category = null;
+        try {
+            log.info("共有{}个线程想去查询数据库", dbThread.incrementAndGet());
+            Object o1 = redisTemplate.opsForValue().get(CATEGORY);
+            if (!Objects.isNull(o1)) {
+                log.info("共有{}个线程走了缓存", cacheThread.incrementAndGet());
+                return JsonUtil.jsonToList((String) o1, CategoryNodeDto.class);
+            }
+
+            List<Category> all = categoryMapper.getCategory(null, null, null);
+            Map<Long, List<Category>> allByParentId = all.stream().collect(Collectors.groupingBy(Category::getParentCid));
+
+            category = getCategory(0L, allByParentId);
+            //写入缓存
+            //解决缓存穿透问题，为空值设置较短的过期时间
+            redisTemplate.opsForValue().set(CATEGORY, JsonUtil.toStr(category), 1, CollectionUtils.isEmpty(category) ? TimeUnit.MINUTES : TimeUnit.DAYS);
+            //测试环境初始化
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            lock.unlock();
+        }
+        return category;
+
     }
 
     /**

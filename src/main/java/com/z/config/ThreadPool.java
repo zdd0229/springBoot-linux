@@ -18,7 +18,7 @@ public class ThreadPool {
     public ThreadPoolExecutor asyncServiceExecutor() {
 
         return new ThreadPoolExecutor(
-                10, 100, 10, TimeUnit.SECONDS, new LinkedBlockingQueue());
+                10, 50, 10, TimeUnit.SECONDS, new LinkedBlockingQueue());
     }
 
 }

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.z.dao.ProductMapper">
+
+    <select id="getSkuInfo" resultType="java.util.Map">
+        select * from   pms_sku_info where sku_id=#{skuId}
+    </select>
+    <select id="getSkuImages" resultType="java.util.Map">
+        select * from   pms_sku_images where sku_id=#{skuId}
+    </select>
+    <select id="getSaleAttr" resultType="java.util.Map">
+        SELECT
+            attr_id,
+            attr_name,
+            attr_value,
+            GROUP_CONCAT( info.sku_id ) sku_ids
+        FROM
+            pms_sku_info info
+            LEFT JOIN pms_sku_sale_attr_value ssav ON info.sku_id = ssav.sku_id
+        WHERE
+            info.spu_id = #{spuId}
+        GROUP BY
+            ssav.attr_id,
+            ssav.attr_name,
+            ssav.attr_value
+    </select>
+    <select id="getSpuDesc" resultType="java.util.Map">
+        select * from   pms_spu_info_desc
+        where spu_id=#{spuId}
+    </select>
+    <select id="getGroupAttrs" resultType="java.util.Map">
+        SELECT
+            ag.attr_group_name,
+            attr.attr_id,
+            attr.attr_name,
+            attr.attr_value
+        FROM
+            pms_attr_attrgroup_relation aar
+            LEFT JOIN pms_attr_group ag ON aar.attr_group_id = ag.attr_group_id
+            LEFT JOIN pms_product_attr_value attr ON aar.attr_id = attr.attr_id
+        WHERE
+            attr.spu_id = #{spuId} AND ag.catelog_id = #{catalogId}
+    </select>
+
+</mapper>

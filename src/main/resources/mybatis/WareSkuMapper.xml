@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.z.dao.WareSkuMapper">
+
+    <update id="lockStock">
+        update wms_ware_sku
+        set stock_locked = stock_locked + #{amount}
+        where sku_id = #{goodsId}
+        and ware_id = #{wareId}
+        and stock - stock_locked >= #{amount}
+    </update>
+    <update id="unlockStock">
+        update wms_ware_sku
+        set stock_locked = stock_locked - #{num}
+        where sku_id = #{skuId}
+        and ware_id = #{wareId}
+    </update>
+</mapper>
