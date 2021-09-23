@@ -16,6 +16,7 @@ public class ThreadCreateImpl implements Runnable {
         thread1.start();
         thread2.start();
         System.out.println("run by：" +Thread.currentThread().getName());
+
     }
 
 }
