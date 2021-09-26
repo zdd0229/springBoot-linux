@@ -9,6 +9,10 @@ public class Apple extends Fruit implements Cloneable{
         this.name = name;
     }
 
+    public Apple() {
+        super();
+    }
+
     @Override
     protected Object clone() throws CloneNotSupportedException {
         return super.clone();

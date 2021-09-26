@@ -9,6 +9,10 @@ public class Fruit implements Cloneable{
         System.out.println("fruit");
     }
 
+    public Fruit() {
+
+    }
+
     public void getName(){
         System.out.println(name);
     }
