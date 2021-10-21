@@ -9,4 +9,5 @@ public class Computer implements Voltage {
             System.out.println("电压异常");
         }
     }
+    //积极主动 以终为始 要事第一 双赢思维 知彼解己 统合综合 不断更新
 }
