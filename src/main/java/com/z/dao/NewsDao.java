@@ -24,6 +24,9 @@ public interface NewsDao {
     @Select("select * from t_news where id = #{id}")
     public NewsPo get(int id);
 
+    @Select("select count(*) from t_news where title = #{title}")
+    public Long titleExist(String title);
+
     @Select("select * from t_news")
     public List<NewsPo> list();
 

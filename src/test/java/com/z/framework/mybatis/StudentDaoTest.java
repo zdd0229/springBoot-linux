@@ -1,4 +1,4 @@
-package com.z.mybatis;
+package com.z.framework.mybatis;
 
 import com.z.bean.PO.StudentPO;
 import com.z.dao.StudentDao;

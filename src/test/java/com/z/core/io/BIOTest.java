@@ -1,7 +1,7 @@
 package com.z.core.io;
 
 import com.z.bean.entity.Category;
-import com.z.logback.LogBackConfigLoader;
+import com.z.framework.logback.LogBackConfigLoader;
 import com.z.util.JsonUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.http.fileupload.IOUtils;

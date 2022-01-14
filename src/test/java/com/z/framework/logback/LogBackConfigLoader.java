@@ -1,4 +1,4 @@
-package com.z.logback;
+package com.z.framework.logback;
 
 import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.joran.JoranConfigurator;
