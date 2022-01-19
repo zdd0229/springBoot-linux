@@ -20,7 +20,7 @@ public class PrimitiveServlet implements Servlet {
 
         writer.println("HTTP/1.1 200 SUCCESS\n");
         writer.println("roses is red");
-        writer.print("violets is blue");
+        writer.println("violets is blue");
     }
 
     @Override

@@ -38,7 +38,7 @@ public class ServletProcessor1 {
 
         try {
             servlet = (Servlet) myClass.newInstance();
-            servlet.service(request, response);
+            servlet.service(new RequestFacade(request), new ResponseFacade(response));
         } catch (InstantiationException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {
