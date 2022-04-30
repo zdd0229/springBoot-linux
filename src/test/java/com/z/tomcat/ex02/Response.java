@@ -1,4 +1,4 @@
-package com.z.tomcat.server;
+package com.z.tomcat.ex02;
 
 /*
   HTTP Response = Status-Line

@@ -1,4 +1,4 @@
-package com.z.core.aqs;
+package com.z.core.concurrency.aqs;
 
 
 import java.util.concurrent.locks.AbstractQueuedSynchronizer;

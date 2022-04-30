@@ -4,8 +4,11 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.z.ImportTemplateFieldVo;
+import com.z.ImportTemplateVo;
 import com.z.bean.jsonres.ReturnCodeUtil;
 
+import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -136,5 +139,49 @@ public class JsonUtil {
             e.printStackTrace();
         }
         return jsonNode;
+    }
+
+    /**
+     * 通过反射将javaBean转换成带默认值的json对象
+     */
+    public static void toJosnStringWithDefaultValue(Class... javaBeans) {
+
+        for (Class javaBean : javaBeans) {
+            StringBuilder res = new StringBuilder();
+            res.append("{");
+
+            Field[] declaredFields = javaBean.getDeclaredFields();
+
+            int i = declaredFields.length;
+            for (Field field : declaredFields) {
+                Class<?> aClass = field.getType();
+                String name = field.getName();
+                if (aClass.equals(Object.class)) {
+                    res.append(String.format("\"%s\": {}", name));
+                }
+                if (aClass.equals(Integer.class)) {
+                    res.append(String.format("\"%s\": 0", name));
+                }
+                if (aClass.equals(String.class)) {
+                    res.append(String.format("\"%s\": \"\"", name));
+                }
+                if (aClass.equals(List.class)) {
+                    res.append(String.format("\"%s\": []", name));
+                }
+                if (aClass.equals(Byte.class)) {
+                    res.append(String.format("\"%s\": 0", name));
+                }
+                if (i-- > 1)
+                    res.append(",");
+            }
+            res.append("}");
+            String string = res.toString();
+            System.out.println(string);
+        }
+
+    }
+
+    public static void main(String[] args) {
+        toJosnStringWithDefaultValue(ImportTemplateFieldVo.class, ImportTemplateVo.class);
     }
 }

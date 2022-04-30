@@ -1,4 +1,4 @@
-package com.z.tomcat.server;
+package com.z.tomcat.ex02;
 
 import javax.servlet.Servlet;
 import javax.servlet.ServletException;

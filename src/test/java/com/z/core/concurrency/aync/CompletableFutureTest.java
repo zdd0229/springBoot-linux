@@ -1,4 +1,4 @@
-package com.z.core.aync;
+package com.z.core.concurrency.aync;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
