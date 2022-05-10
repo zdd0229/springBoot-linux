@@ -1,5 +1,6 @@
 package com.z.controller;
 
+import com.z.bean.dto.CategoryNodeDto;
 import com.z.bean.jsonres.JsonResult;
 import com.z.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,7 @@ public class CategoryController {
      * redis test
      */
     @GetMapping("redis-test")
-    public JsonResult testRedis(){
+    public JsonResult testRedis() {
         Object res = categoryService.testRedis();
         return JsonResult.success(res);
     }

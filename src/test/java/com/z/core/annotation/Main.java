@@ -9,7 +9,11 @@ public class Main {
         StringBuilder sb = new StringBuilder();
 
         Class clazz = person.getClass();
+        Class clazz1 = Person.class;
 
+        System.out.println(clazz == clazz1);
+
+        Class stringClazz = String.class;
         boolean exist = clazz.isAnnotationPresent(Table.class);
         if (!exist) {
             return null;
@@ -32,11 +36,11 @@ public class Main {
             String columnName = column.value();
             String fieldName = field.getName();
 
-            Object fieldValue= null;
-            String getMethodName="get"+fieldName.substring(0,1).toUpperCase()+fieldName.substring(1);
+            Object fieldValue = null;
+            String getMethodName = "get" + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
             try {
-                Method method=clazz.getMethod(getMethodName);
-                fieldValue=method.invoke(person);
+                Method method = clazz.getMethod(getMethodName);
+                fieldValue = method.invoke(person);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -48,11 +52,11 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        Person p= new Person();
-        p.setName("赵丁丁");
-        p.setUserName("zdd");
+        Person p = new Person();
+        p.name = "赵丁丁";
+        p.userName = "zdd";
 
-        String sql=query(p);
+        String sql = query(p);
         System.out.println(sql);
     }
 

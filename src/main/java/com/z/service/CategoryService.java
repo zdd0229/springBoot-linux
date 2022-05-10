@@ -1,7 +1,7 @@
 package com.z.service;
 
+import com.z.bean.dto.CategoryNodeDto;
 import com.z.bean.entity.Category;
-import com.z.controller.CategoryNodeDto;
 import com.z.dao.CategoryMapper;
 import com.z.util.JsonUtil;
 import lombok.extern.slf4j.Slf4j;

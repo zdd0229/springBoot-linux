@@ -4,14 +4,15 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.z.ImportTemplateFieldVo;
-import com.z.ImportTemplateVo;
 import com.z.bean.jsonres.ReturnCodeUtil;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+//import com.z.ImportTemplateFieldVo;
+//import com.z.ImportTemplateVo;
 
 public class JsonUtil {
     /**
@@ -182,6 +183,5 @@ public class JsonUtil {
     }
 
     public static void main(String[] args) {
-        toJosnStringWithDefaultValue(ImportTemplateFieldVo.class, ImportTemplateVo.class);
     }
 }

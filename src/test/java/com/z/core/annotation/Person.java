@@ -1,11 +1,11 @@
 package com.z.core.annotation;
 
-@Table("person")
+@Table(value = "person")
 public class Person {
     @Column("name")
-    private String name;
+    public String name;
     @Column("user_name")
-    private String userName;
+    public String userName;
 
     public String getName() {
         return name;
